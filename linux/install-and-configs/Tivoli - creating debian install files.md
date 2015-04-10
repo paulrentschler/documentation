@@ -56,12 +56,12 @@ It should look like this:
     Source: tivsm-api
     Section: alien
     Priority: extra
-    Maintainer: Paul Rentschler <par117@psu.edu>
+    Maintainer: Paul Rentschler <paul@rentschler.ws>
     Package: tivsm-api
     Architecture: amd64
     Depends:
     Description: the API IBM Tivoli Storage Manager API
-    Version: 6.3.2.0
+    Version: 6.3.2
 
 ### TIVsm-BA
 
@@ -74,12 +74,12 @@ It should look like this:
     Source: tivsm-ba
     Section: alien
     Priority: extra
-    Maintainer: Paul Rentschler <par117@psu.edu>
+    Maintainer: Paul Rentschler <paul@rentschler.ws>
     Package: tivsm-ba
     Architecture: amd64
     Depends:
     Description: the Backup Archive Client IBM Tivoli Storage Manager Client
-    Version: 6.3.2.0
+    Version: 6.3.2
 
 ### GSKcrypt64
 
@@ -92,12 +92,12 @@ It should look like this:
     Source: gskcrypt64
     Section: alien
     Priority: extra
-    Maintainer: Paul Rentschler <par117@psu.edu>
+    Maintainer: Paul Rentschler <paul@rentschler.ws>
     Package: gskcrypt64
     Architecture: amd64
     Depends:
     Description: IBM GSKit Cryptography Runtime
-    Version: 6.3.2.0
+    Version: 8.0
 
 ### GSKssl64
 
@@ -110,12 +110,12 @@ It should look like this:
     Source: gskssl64
     Section: alien
     Priority: extra
-    Maintainer: Paul Rentschler <par117@psu.edu>
+    Maintainer: Paul Rentschler <paul@rentschler.ws>
     Package: gskssl64
     Architecture: amd64
     Depends:
     Description: IBM GSKit SSL Runtime With Acme Toolkit
-    Version: 6.3.2.0
+    Version: 8.0
 
 
 ### Fix the permissions
