@@ -7,6 +7,8 @@ Debian install files for use with Debian or Ubuntu.
 Ubuntu is not a linux distribution that is supported by IBM for their Tivoli
 backup client. This information was pulled together from internet sources
 [here](http://www.rocko.me/?p=82) and [here](http://open-systems.ufl.edu/ubuntu_client).
+Additional assistance with the newer 6.3.x versions was obtained from
+[here](https://kb.berkeley.edu/page.php?id=27401).
 
 
 ## Install prerequisites
@@ -32,7 +34,10 @@ from IBM and untar it.
 We will now use alien to unpack the RPM file so we can repackage it as a
 Debian .deb package:
 
-    sudo alien -g TIVsm-API64.x86_64.rpm TIVsm-BA.x86_64.rpm
+    sudo alien -g TIVsm-API64.x86_64.rpm
+    sudo alien -g TIVsm-BA.x86_64.rpm
+    sudo alien -g gskcrypt64-8.0.14.14.linux.x86_64.rpm
+    sudo alien -g gskssl64-8.0.14.14.linux.x86_64.rpm
 
 
 ## Fix the RPM vs DEB incompatibilities
@@ -40,7 +45,7 @@ Debian .deb package:
 Before we repackage it, we need to edit the control files as they are not
 properly formatted.
 
-### TIMsv-API
+### TIMsv-API64
 
 Edit the file:
 
@@ -54,6 +59,7 @@ It should look like this:
     Maintainer: Paul Rentschler <par117@psu.edu>
     Package: tivsm-api
     Architecture: amd64
+    Depends:
     Description: the API IBM Tivoli Storage Manager API
     Version: 6.3.2.0
 
@@ -71,7 +77,44 @@ It should look like this:
     Maintainer: Paul Rentschler <par117@psu.edu>
     Package: tivsm-ba
     Architecture: amd64
+    Depends:
     Description: the Backup Archive Client IBM Tivoli Storage Manager Client
+    Version: 6.3.2.0
+
+### GSKcrypt64
+
+Edit the file:
+
+    sudo vi gskcrypt64-8.0/debian/control
+
+It should look like this:
+
+    Source: gskcrypt64
+    Section: alien
+    Priority: extra
+    Maintainer: Paul Rentschler <par117@psu.edu>
+    Package: gskcrypt64
+    Architecture: amd64
+    Depends:
+    Description: IBM GSKit Cryptography Runtime
+    Version: 6.3.2.0
+
+### GSKssl64
+
+Edit the file:
+
+    sudo vi gskssl64-8.0/debian/control
+
+It should look like this:
+
+    Source: gskssl64
+    Section: alien
+    Priority: extra
+    Maintainer: Paul Rentschler <par117@psu.edu>
+    Package: gskssl64
+    Architecture: amd64
+    Depends:
+    Description: IBM GSKit SSL Runtime With Acme Toolkit
     Version: 6.3.2.0
 
 
@@ -81,6 +124,8 @@ The _postinst_ script must be executable:
 
     sudo chmod 755 TIVsm-API64-6.3.2/debian/postinst
     sudo chmod 755 TIVsm-BA-6.3.2/debian/postinst
+    sudo chmod 755 gskcrypt64-8.0/debian/postinst
+    sudo chmod 755 gskssl64-8.0/debian/postinst
 
 
 ## Create the Debian install files
@@ -89,17 +134,23 @@ Rename the "debian" directories as they are expected to be uppercase:
 
     sudo mv TIVsm-API64-6.3.2/debian TIVsm-API64-6.3.2/DEBIAN
     sudo mv TIVsm-BA-6.3.2/debian TIVsm-BA-6.3.2/DEBIAN
+    sudo mv gskcrypt64-8.0/debian gskcrypt64-8.0/DEBIAN
+    sudo mv gskssl64-8.0/debian gskssl64-8.0/DEBIAN
 
 Create the debian packages:
 
     sudo dpkg -b TIVsm-API64-6.3.2
     sudo dpkg -b TIVsm-BA-6.3.2
+    sudo dpkg -b gskcrypt64-8.0
+    sudo dpkg -b gskssl64-8.0
 
 These commands will result in the following two messages indicating that the
 Debian packages were created:
 
     dpkg-deb: building package `tivsm-api64' in `TIVsm-API64-6.3.2.deb'.
     dpkg-deb: building package `tivsm-ba' in `TIVsm-BA-6.3.2.deb'.
+    dpkg-deb: building package `gskcrypt64' in `gskcrypt64-8.0.deb'.
+    dpkg-deb: building package `gskssl64' in `gskssl64-8.0.deb'.
 
 You now have Tivoli backup client installation files that will work with
 Debian packaging. See "Ubuntu - Tivoli backup client installation.md" for

@@ -21,6 +21,8 @@ With the Debian packages created, now we can install the Tivoli client.
 
     sudo dpkg -i TIVsm-API64-6.3.2.deb
     sudo dpkg -i TIVsm-BA-6.3.2.deb
+    sudo dpkg -i gskcrypt64-8.0
+    sudo dpkg -i gskssl64-8.0
 
 The client is now installed in the _/opt/tivoli_ directory.
 
@@ -30,23 +32,29 @@ We must tell linux where to find the Tivoli library files:
 
 This file should contain:
 
-    /opt/tivoli/tsm/client/api/bin
+    /opt/tivoli/tsm/client/api/bin64
+    /usr/local/ibm/gsk8_64/lib64
 
 Then update the database:
 
     sudo ldconfig
+
+Create the language symlink:
+
+    cd /opt/tivoli/tsm/client/ba/bin
+    sudo ln -s ../../lang/EN_US EN_US
 
 
 ## Test the installation
 
 Executing:
 
-    sudo dsmc incremental
+    sudo dsmc
 
 Should result in:
 
-    ANS0102W Unable to open the message repository /opt/tivoli/tsm/client/ba/bin/EN_US/dsmclientV3.cat.
-    The American English repository will be used instead.
+    ANS0990W Options file '/opt/tivoli/tsm/client/ba/bin/dsm.opt' could not be found. Default option values will be used.
+    ANS1035S Options file '/opt/tivoli/tsm/client/ba/bin/dsm.sys' could not be found, or it cannot be read.
 
 
 ## Configuring the client to use ITS's backup server
