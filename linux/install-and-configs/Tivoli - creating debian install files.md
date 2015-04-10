@@ -14,7 +14,7 @@ backup client. This information was pulled together from internet sources
 Install alien, which allows you to install RPM packages on a Debian/Ubuntu
 machine, and some other supporting packages:
 
-    sudo aptitude install alien libstdc++6 ksh ia32-libs
+    sudo aptitude install alien
 
 
 ## Deconstruct the RPMs
