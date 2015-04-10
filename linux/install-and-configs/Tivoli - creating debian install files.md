@@ -19,20 +19,20 @@ machine, and some other supporting packages:
 
 ## Deconstruct the RPMs
 
-Get the [Tivoli linux client software](ftp://ftp.aset.psu.edu/pub/tivoli-storage-management/maintenance/client/v6r1/Linux/LinuxX86/v613/6.1.3.0-TIV-TSMBAC-LinuxX86.tar)
-from Penn State's repository and untar it. Version 6.3.1.0 was the newest
-version available.
+Get the [Tivoli linux client software](http://www-01.ibm.com/support/docview.wss?uid=swg21239415)
+from IBM and untar it.
 
     cd /usr/local/src
     mkdir tivoli
+    sudo chown myusername:myusername tivoli
     cd tivoli
-    wget ftp://ftp.aset.psu.edu/pub/tivoli-storage-management/maintenance/client/v6r1/Linux/LinuxX86/v613/6.1.3.0-TIV-TSMBAC-LinuxX86.tar
-    tar -xvf 6.1.3.0-TIV-TSMBAC-LinuxX86.tar
+    cp ~/6.3.2.0-TIV-TSMBAC-LinuxX86.tar ./
+    tar -xvf 6.3.2.0-TIV-TSMBAC-LinuxX86.tar
 
 We will now use alien to unpack the RPM file so we can repackage it as a
 Debian .deb package:
 
-    sudo alien -g TIVsm-API.i386.rpm TIVsm-BA.i386.rpm
+    sudo alien -g TIVsm-API64.x86_64.rpm TIVsm-BA.x86_64.rpm
 
 
 ## Fix the RPM vs DEB incompatibilities
@@ -44,7 +44,7 @@ properly formatted.
 
 Edit the file:
 
-    sudo vi TIVsm-API-6.1.3/debian/control
+    sudo vi TIVsm-API64-6.3.2/debian/control
 
 It should look like this:
 
@@ -55,13 +55,13 @@ It should look like this:
     Package: tivsm-api
     Architecture: amd64
     Description: the API IBM Tivoli Storage Manager API
-    Version: 6.1.3.0
+    Version: 6.3.2.0
 
 ### TIVsm-BA
 
 Edit the file:
 
-    sudo vi TIVsm-BA-6.1.3/debian/control
+    sudo vi TIVsm-BA-6.3.2/debian/control
 
 It should look like this:
 
@@ -72,26 +72,35 @@ It should look like this:
     Package: tivsm-ba
     Architecture: amd64
     Description: the Backup Archive Client IBM Tivoli Storage Manager Client
-    Version: 6.1.3.0
+    Version: 6.3.2.0
+
+
+### Fix the permissions
+
+The _postinst_ script must be executable:
+
+    sudo chmod 755 TIVsm-API64-6.3.2/debian/postinst
+    sudo chmod 755 TIVsm-BA-6.3.2/debian/postinst
 
 
 ## Create the Debian install files
 
 Rename the "debian" directories as they are expected to be uppercase:
 
-    sudo mv TIVsm-API-6.1.3/debian TIVsm-API-6.1.3/DEBIAN
-    sudo mv TIVsm-BA-6.1.3/debian TIVsm-BA-6.1.3/DEBIAN
+    sudo mv TIVsm-API64-6.3.2/debian TIVsm-API64-6.3.2/DEBIAN
+    sudo mv TIVsm-BA-6.3.2/debian TIVsm-BA-6.3.2/DEBIAN
 
 Create the debian packages:
 
-    sudo dpkg -b TIVsm-API-6.1.3
-    sudo dpkg -b TIVsm-BA-6.1.3
+    sudo dpkg -b TIVsm-API64-6.3.2
+    sudo dpkg -b TIVsm-BA-6.3.2
 
 These commands will result in the following two messages indicating that the
 Debian packages were created:
 
-    dpkg-deb: building package `tivsm-api' in `TIVsm-API-6.1.3.deb'.
-    dpkg-deb: building package `tivsm-ba' in `TIVsm-BA-6.1.3.deb'.
+    dpkg-deb: building package `tivsm-api64' in `TIVsm-API64-6.3.2.deb'.
+    dpkg-deb: building package `tivsm-ba' in `TIVsm-BA-6.3.2.deb'.
 
 You now have Tivoli backup client installation files that will work with
-Debian packaging.
+Debian packaging. See "Ubuntu - Tivoli backup client installation.md" for
+instructions on how to install these client files.
