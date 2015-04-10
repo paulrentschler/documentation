@@ -19,8 +19,8 @@ process of which is described in "Tivoli - creating debian install files.md".
 
 With the Debian packages created, now we can install the Tivoli client.
 
-    sudo dpkg -i TIVsm-API-6.1.3.deb
-    sudo dpkg -i TIVsm-BA-6.1.3.deb
+    sudo dpkg -i TIVsm-API64-6.3.2.deb
+    sudo dpkg -i TIVsm-BA-6.3.2.deb
 
 The client is now installed in the _/opt/tivoli_ directory.
 
